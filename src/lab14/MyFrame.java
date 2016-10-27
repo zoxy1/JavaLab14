@@ -284,16 +284,13 @@ public class MyFrame extends JFrame {
 	    
 	    JTree tree_1 = new JTree(books);
 		tree_1.setBounds(10, 110, 420, 424);
+	
 		contentPane.add(tree_1);
 		
-		
-		
-		contentPane.add(tree_1);
-		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setEditable(true);
-		comboBox.setBounds(161, 63, 31, 22);
-		contentPane.add(comboBox);
+//		JComboBox comboBox = new JComboBox();
+//		comboBox.setEditable(true);
+//		comboBox.setBounds(161, 63, 31, 22);
+//		contentPane.add(comboBox);
 		
 		
 	}
