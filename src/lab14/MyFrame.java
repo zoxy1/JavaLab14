@@ -1,4 +1,5 @@
 package lab14;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -96,7 +97,8 @@ public class MyFrame extends JFrame {
 
 		ArrayList<String> stringList = new ArrayList<>();
 		// использование try-with-resources
-		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+		try (BufferedReader reader = new BufferedReader(
+				new FileReader(fileName))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
 
@@ -141,75 +143,126 @@ public class MyFrame extends JFrame {
 		btnOk.setEnabled(false);
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (file.isFile()) {
+					
 
-				if (file != null) {
-					Calculation variableCalculation = new Calculation(1);
-					ArrayList<Double> doubleList = new ArrayList<>();
+					if (file != null) {
+						Calculation variableCalculation = new Calculation(1);
+						ArrayList<Double> doubleList = new ArrayList<>();
 
-					ArrayList<String> stringList = new ArrayList<>();
-					// переменная stringList хранит список строк прочитанных из
-					// файла in.txt
-					stringList = readFile(file);
-					// System.out.println(stringList);
-					// в переменную sb записываем все полученные результаты
-					StringBuilder sb = new StringBuilder();
-					// пробегаем по все му списку stringList(каждый элемент
-					// списка содержит
-					// одну строку)
-					for (int i = 0; i < stringList.size(); i++) {
+						ArrayList<String> stringList = new ArrayList<>();
+						// переменная stringList хранит список строк прочитанных
+						// из
+						// файла in.txt
+						stringList = readFile(file);
+						// System.out.println(stringList);
+						// в переменную sb записываем все полученные результаты
+						StringBuilder sb = new StringBuilder();
+						// пробегаем по все му списку stringList(каждый элемент
+						// списка содержит
+						// одну строку)
+						for (int i = 0; i < stringList.size(); i++) {
 
-						// все числа в строке записываем отдельно в массив
-						// isParts
-						String[] isParts = stringList.get(i).split(" ");
-						// пробегаем по всему массиву isParts и преобразуем в
-						// Double и
-						// добавляем в список doubleList
-						for (int j = 0; j < isParts.length; j++) {
-							doubleList.add(j, Double.parseDouble(isParts[j]));
+							// все числа в строке записываем отдельно в массив
+							// isParts
+							String[] isParts = stringList.get(i).split(" ");
+							// пробегаем по всему массиву isParts и преобразуем
+							// в
+							// Double и
+							// добавляем в список doubleList
+							for (int j = 0; j < isParts.length; j++) {
+								doubleList.add(j,
+										Double.parseDouble(isParts[j]));
 
+							}
+							// минимальное значение аргумента х которое
+							// находится в
+							// списке
+							// doubleList по индексу 4
+							Double x = doubleList.get(4);
+							Double y = 0.0d; // переменная, значение вычисленной
+												// функции
+							// выполняем пока аргумент х <= максимальному
+							// аргументу
+							// х
+							while (x <= doubleList.get(5)) {
+								// вычисляем уравнение
+								y = variableCalculation.calculateFunction(
+										doubleList.get(0), doubleList.get(1),
+										doubleList.get(2), doubleList.get(3), x);
+								// выводим значения уравнения для всег
+								// аргументов от
+								// минимального до максимального значения с
+								// шагом
+								// doubleList.get(6)
+								// выводим с точностью 2 знака после запятой
+								System.out.printf("%1$.2f", y);
+								System.out.print(" ");
+								// в переменную sb класса StringBuilder помещаем
+								// значение
+								// уравнения через пробел
+								sb.append(String.format("%.2f ", y) + " ");
+								// прибавляем к начальному значению аргумента
+								// шаг
+								// doubleList.get(6)
+								x = x + doubleList.get(6);
+
+							}
+							// переводим на новую строку рассчет значений
+							// функции
+							// для других
+							// коэффициентов
+							System.out.print("\n");
+							// в переменную sb класса StringBuilder символ
+							// окончания
+							// строки
+							sb.append("\n");
 						}
-						// минимальное значение аргумента х которое находится в
-						// списке
-						// doubleList по индексу 4
-						Double x = doubleList.get(4);
-						Double y = 0.0d; // переменная, значение вычисленной
-											// функции
-						// выполняем пока аргумент х <= максимальному аргументу
-						// х
-						while (x <= doubleList.get(5)) {
-							// вычисляем уравнение
-							y = variableCalculation.calculateFunction(doubleList.get(0), doubleList.get(1), doubleList.get(2), doubleList.get(3), x);
-							// выводим значения уравнения для всег аргументов от
-							// минимального до максимального значения с шагом
-							// doubleList.get(6)
-							// выводим с точностью 2 знака после запятой
-							System.out.printf("%1$.2f", y);
-							System.out.print(" ");
-							// в переменную sb класса StringBuilder помещаем
-							// значение
-							// уравнения через пробел
-							sb.append(String.format("%.2f ", y) + " ");
-							// прибавляем к начальному значению аргумента шаг
-							// doubleList.get(6)
-							x = x + doubleList.get(6);
+						// записываем в файл out.txt полученные результаты с
+						// помощью
+						// метода writeFile,
+						// который сам обрабатывает исключения
+						MyFrame.writeFile("src/out.txt", sb.toString());
+						// записываем полученные результаты в файл out.txt,
 
-						}
-						// переводим на новую строку рассчет значений функции
-						// для других
-						// коэффициентов
-						System.out.print("\n");
-						// в переменную sb класса StringBuilder символ окончания
-						// строки
-						sb.append("\n");
+					} else {
+						System.out.println("Файл не выбран!!!");
 					}
-					// записываем в файл out.txt полученные результаты с помощью
-					// метода writeFile,
-					// который сам обрабатывает исключения
-					MyFrame.writeFile("src/out.txt", sb.toString());
-					// записываем полученные результаты в файл out.txt,
+				}
+				if (file.isDirectory()) {
+				
+					DefaultMutableTreeNode books = new DefaultMutableTreeNode("Books");
 
-				} else {
-					System.out.println("Файл не выбран!!!");
+					// Three Departments
+					DefaultMutableTreeNode fiction = new DefaultMutableTreeNode("Fiction");
+					DefaultMutableTreeNode nonfiction = new DefaultMutableTreeNode(
+							"Non-Fiction");
+					DefaultMutableTreeNode biography = new DefaultMutableTreeNode(
+							"Biography");
+
+					// Fiction Books
+					fiction.add(new DefaultMutableTreeNode("Moby Dick"));
+					fiction.add(new DefaultMutableTreeNode("MacBeth"));
+					fiction.add(new DefaultMutableTreeNode("War and Peace"));
+
+					// Non Fiction Books
+					nonfiction.add(new DefaultMutableTreeNode("Unbroken"));
+					nonfiction.add(new DefaultMutableTreeNode("The Diary of a Young Girl"));
+					nonfiction.add(new DefaultMutableTreeNode("The Prince"));
+
+					// Biography Books
+					biography.add(new DefaultMutableTreeNode("John Adams"));
+					biography.add(new DefaultMutableTreeNode("Steve Jobs"));
+
+					books.add(fiction);
+					books.add(nonfiction);
+					books.add(biography);
+
+					JTree tree_1 = new JTree(books);
+					tree_1.setBounds(10, 110, 420, 424);
+
+					contentPane.add(tree_1);
+					contentPane.updateUI();
 				}
 			}
 		});
@@ -221,22 +274,29 @@ public class MyFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				JFileChooser fileopen = new JFileChooser();
-				int ret = fileopen.showDialog(null, "Открыть файл");
+
+				fileopen.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+				int ret = fileopen.showDialog(null, "Открыть");
 				if (ret == JFileChooser.APPROVE_OPTION) {
 
 					file = fileopen.getSelectedFile();
-					System.out.println("Файл открыт");
-
+					if (file.isDirectory()) {
+						System.out.println("Выбрана директория: "
+								+ file.getAbsolutePath());
+					
+						
+						
+					}
+					if (file.isFile()) {
+						System.out.println("Выбран файл: " + file.getName());
+					}
 					btnOk.setEnabled(true);
-
 				} else {
-					System.out.println("Файл не открыт");
+					System.out.println("Файл или директория не выбрны");
 					btnOk.setEnabled(false);
-				}
-				if(ret == JFileChooser.DIRECTORIES_ONLY){
-				System.out.println("Выбрали директорию");	
-				//JFileChooser.
-				
+
+					// System.out.println(fileopen.getRootPane().getD);
+
 				}
 			}
 		});
@@ -253,45 +313,24 @@ public class MyFrame extends JFrame {
 		});
 		btnCancel.setBounds(252, 25, 97, 25);
 		contentPane.add(btnCancel);
+
 		
-		
-		DefaultMutableTreeNode books = new DefaultMutableTreeNode("Books");
-		 
-	    // Three Departments
-	    DefaultMutableTreeNode fiction = new DefaultMutableTreeNode("Fiction");
-	    DefaultMutableTreeNode nonfiction = new DefaultMutableTreeNode("Non-Fiction");
-	    DefaultMutableTreeNode biography = new DefaultMutableTreeNode("Biography");
-	 
-	 
-	    // Fiction Books
-	    fiction.add(new DefaultMutableTreeNode("Moby Dick"));
-	    fiction.add(new DefaultMutableTreeNode("MacBeth"));
-	    fiction.add(new DefaultMutableTreeNode("War and Peace"));
-	 
-	 
-	    // Non Fiction Books
-	    nonfiction.add(new DefaultMutableTreeNode("Unbroken"));
-	    nonfiction.add(new DefaultMutableTreeNode("The Diary of a Young Girl"));
-	    nonfiction.add(new DefaultMutableTreeNode("The Prince"));
-	 
-	    // Biography Books
-	    biography.add(new DefaultMutableTreeNode("John Adams"));
-	    biography.add(new DefaultMutableTreeNode("Steve Jobs"));
-	 
-	    books.add(fiction);
-	    books.add(nonfiction);
-	    books.add(biography);
-	    
-	    JTree tree_1 = new JTree(books);
-		tree_1.setBounds(10, 110, 420, 424);
+
+//		String[] elements = new String[] {"Вася", "Петя",
+//			"<html><font size = +1 color = yellow>Иван</font>"};
+//			
+//			
+//		 JComboBox comboBox = new JComboBox(elements);
+//		 comboBox.setSelectedIndex(1);
+//		 comboBox.setSize(getSize());
+//		 comboBox.setEditable(true);
+//		 comboBox.setBounds(161, 63, 31, 22);
+//	
+//		 
+//			
+//				 contentPane.add(comboBox);
+			
+			
 	
-		contentPane.add(tree_1);
-		
-//		JComboBox comboBox = new JComboBox();
-//		comboBox.setEditable(true);
-//		comboBox.setBounds(161, 63, 31, 22);
-//		contentPane.add(comboBox);
-		
-		
 	}
 }
