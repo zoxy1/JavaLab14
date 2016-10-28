@@ -50,6 +50,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javax.swing.JList;
@@ -144,7 +146,6 @@ public class MyFrame extends JFrame {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (file.isFile()) {
-					
 
 					if (file != null) {
 						Calculation variableCalculation = new Calculation(1);
@@ -230,11 +231,19 @@ public class MyFrame extends JFrame {
 					}
 				}
 				if (file.isDirectory()) {
-				
-					DefaultMutableTreeNode books = new DefaultMutableTreeNode("Books");
+
+					Path testFilePath = Paths.get(file.getAbsolutePath());
+
+					for (Path element : testFilePath) {
+						System.out.println("\t path element: " + element);
+					}
+
+					DefaultMutableTreeNode books = new DefaultMutableTreeNode(
+							testFilePath.getRoot());
 
 					// Three Departments
-					DefaultMutableTreeNode fiction = new DefaultMutableTreeNode("Fiction");
+					DefaultMutableTreeNode fiction = new DefaultMutableTreeNode(
+							"Fiction");
 					DefaultMutableTreeNode nonfiction = new DefaultMutableTreeNode(
 							"Non-Fiction");
 					DefaultMutableTreeNode biography = new DefaultMutableTreeNode(
@@ -247,7 +256,8 @@ public class MyFrame extends JFrame {
 
 					// Non Fiction Books
 					nonfiction.add(new DefaultMutableTreeNode("Unbroken"));
-					nonfiction.add(new DefaultMutableTreeNode("The Diary of a Young Girl"));
+					nonfiction.add(new DefaultMutableTreeNode(
+							"The Diary of a Young Girl"));
 					nonfiction.add(new DefaultMutableTreeNode("The Prince"));
 
 					// Biography Books
@@ -276,16 +286,17 @@ public class MyFrame extends JFrame {
 				JFileChooser fileopen = new JFileChooser();
 
 				fileopen.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+
 				int ret = fileopen.showDialog(null, "Открыть");
 				if (ret == JFileChooser.APPROVE_OPTION) {
 
 					file = fileopen.getSelectedFile();
+
+					// void setDialogType(int dialogType)
 					if (file.isDirectory()) {
 						System.out.println("Выбрана директория: "
 								+ file.getAbsolutePath());
-					
-						
-						
+
 					}
 					if (file.isFile()) {
 						System.out.println("Выбран файл: " + file.getName());
@@ -314,23 +325,19 @@ public class MyFrame extends JFrame {
 		btnCancel.setBounds(252, 25, 97, 25);
 		contentPane.add(btnCancel);
 
-		
+		// String[] elements = new String[] {"Вася", "Петя",
+		// "<html><font size = +1 color = yellow>Иван</font>"};
+		//
+		//
+		// JComboBox comboBox = new JComboBox(elements);
+		// comboBox.setSelectedIndex(1);
+		// comboBox.setSize(getSize());
+		// comboBox.setEditable(true);
+		// comboBox.setBounds(161, 63, 31, 22);
+		//
+		//
+		//
+		// contentPane.add(comboBox);
 
-//		String[] elements = new String[] {"Вася", "Петя",
-//			"<html><font size = +1 color = yellow>Иван</font>"};
-//			
-//			
-//		 JComboBox comboBox = new JComboBox(elements);
-//		 comboBox.setSelectedIndex(1);
-//		 comboBox.setSize(getSize());
-//		 comboBox.setEditable(true);
-//		 comboBox.setBounds(161, 63, 31, 22);
-//	
-//		 
-//			
-//				 contentPane.add(comboBox);
-			
-			
-	
 	}
 }
