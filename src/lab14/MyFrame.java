@@ -32,6 +32,9 @@ public class MyFrame extends JFrame {
 	final JButton btnOk = new JButton("Ok");
 	File file;
 
+	JTree tree_1;
+	JScrollPane scrollPane;
+
 	/**
 	 * Launch the application.
 	 */
@@ -107,6 +110,16 @@ public class MyFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+
+		File file_null = new File("/");
+
+		TreeModel model = new FileTreeModel(file_null);
+
+		tree_1 = new JTree(model);
+		scrollPane = new JScrollPane(tree_1);
+		scrollPane.setViewportBorder(new EmptyBorder(1, 1, 1, 1));
+		scrollPane.setToolTipText("Scroll panell");
+		scrollPane.setBounds(5, 60, 800, 500);
 
 		btnOk.setEnabled(false);
 		btnOk.addActionListener(new ActionListener() {
@@ -202,14 +215,8 @@ public class MyFrame extends JFrame {
 				}
 				if (file.isDirectory()) {
 
-					TreeModel model = new FileTreeModel(file);
-					JTree tree_1 = new JTree(model);
-					JScrollPane scrollPane = new JScrollPane(tree_1);
-					scrollPane.setViewportBorder(new EmptyBorder(1, 1, 1, 1));
-					scrollPane.setToolTipText("Scroll panell");
-					scrollPane.setBounds(5, 60, 800, 500);
+					tree_1.setModel(new FileTreeModel(file));
 					contentPane.add(scrollPane);
-
 					contentPane.updateUI();
 
 				}
